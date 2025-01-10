@@ -10,13 +10,16 @@ export const RemovableItems = () => {
   const props: Partial<SortableProps> = {
     adjustScale: true,
     Container: (props: any) => {
-      return <GridContainer {...props} columns={5} />
+      return <GridContainer {...props} columns={5} gap={10} />
     },
     strategy: rectSortingStrategy,
     wrapperStyle: () => ({
-      width: 140,
+      width: 800,
       height: 140,
     }),
+    renderItem: (pr) => {
+      return <Item {...pr}/>
+    }
   };
   const animateLayoutChanges: AnimateLayoutChanges = (args) =>
     defaultAnimateLayoutChanges({...args, wasDragging: true});
@@ -33,41 +36,7 @@ export const RemovableItems = () => {
 };
 
 function App() {
-  
-  const props: Partial<SortableProps> = {
-    adjustScale: true,
-    Container: (props: any) => {
-      return <GridContainer {...props} columns={1} />
-    },
-    strategy: rectSortingStrategy,
-    wrapperStyle: () => ({
-      width: 1000,
-      height: 140,
-    }),
-    renderItem: (pr) => {
-
-      return (
-        <Item 
-          {...pr} 
-          value={
-            <RemovableItems/>
-          }
-        />
-      )
-    }
-  };
-  const animateLayoutChanges: AnimateLayoutChanges = (args) =>
-    defaultAnimateLayoutChanges({...args, wasDragging: true});
-
-  return (
-    <Sortable
-      {...props}
-      animateLayoutChanges={animateLayoutChanges}
-      measuring={{droppable: {strategy: MeasuringStrategy.Always}}}
-      removable
-      handle
-    />
-  );
+  return <RemovableItems/>
 }
 
 export default App;

@@ -93,6 +93,8 @@ export const Item = React.memo(
           transform,
           transition,
           value,
+          onRemove,
+          handle
         })
       ) : (
         <li
