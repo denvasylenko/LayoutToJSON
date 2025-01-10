@@ -50,6 +50,7 @@ export interface Props {
   handle?: boolean;
   itemCount?: number;
   items?: UniqueIdentifier[];
+  setItems: any, // @TODO change after for normal type
   measuring?: MeasuringConfiguration;
   modifiers?: Modifiers;
   renderItem?: any;
@@ -116,11 +117,13 @@ export function Sortable({
   style,
   useDragOverlay = true,
   wrapperStyle = () => ({}),
+  setItems,
+  items
 }: Props) {
-  const [items, setItems] = useState<UniqueIdentifier[]>(
-    () =>
-      initialItems ?? createRange<UniqueIdentifier>(itemCount, (index) => index)
-  );
+  // const [items, setItems] = useState<UniqueIdentifier[]>(
+  //   () =>
+  //     initialItems ?? createRange<UniqueIdentifier>(itemCount, (index) => index)
+  // );
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor, {
