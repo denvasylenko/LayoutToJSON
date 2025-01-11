@@ -1,25 +1,23 @@
 import React from 'react';
 
-import styles from './GridContainer.module.css';
-
+import { Col, Divider, Row } from 'antd';
 export interface Props {
   children: React.ReactNode;
-  columns: number;
   gap: number;
+  itemConfig: any
 }
 
-export function GridContainer({children, columns, gap}: Props) {
+export function GridContainer({children, itemConfig, gap}: Props) {
   return (
-    <ul
-      className={styles.GridContainer}
-      style={
-        {
-          '--col-count': columns,
-          '--col-gap': gap + 'px'
-        } as React.CSSProperties
-      }
-    >
-      {children}
-    </ul>
+    <div style={{padding: '25px 0px'}}>
+      <Row gutter={[Number(gap), Number(gap)]}>
+      {React.Children.map(children, (child) => {
+        const span = itemConfig[child.props.id].span
+
+        return <Col span={Number(span)}>{child}</Col>
+      })}
+      </Row>
+
+    </div>
   );
 }

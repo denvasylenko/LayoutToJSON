@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {Action, Props as ActionProps} from '../Action/Action.tsx';
-import { DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 
-export function Remove(props: ActionProps) {
+export function Add(props: ActionProps) {
   return (
     <Action
       {...props}
@@ -12,7 +12,7 @@ export function Remove(props: ActionProps) {
         background: 'rgba(255, 70, 70, 0.1)',
       }}
     >
-      <DeleteOutlined />
+      <PlusOutlined />
     </Action>
   );
 }

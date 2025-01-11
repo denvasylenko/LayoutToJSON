@@ -1,23 +1,35 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import type {DraggableSyntheticListeners} from '@dnd-kit/core';
-import type {Transform} from '@dnd-kit/utilities';
+import type { DraggableSyntheticListeners } from '@dnd-kit/core';
+import type { Transform } from '@dnd-kit/utilities';
 
-import {Handle} from './components/Handle/Handle.tsx';
-import {Remove} from './components/Remove/Remove.tsx';
+import { Handle } from './components/Handle/Handle.tsx';
+import { Remove } from './components/Remove/Remove.tsx';
 
 import styles from './Item.module.scss';
+
+import { Add } from './components/Add/Add.tsx';
+import { Edit } from './components/Edit/Edit.tsx';
+import { SetColumns } from './components/SetColumns/SetColumns.tsx';
+import { SetGap } from './components/SetGap/SetGap.tsx';
+import { SetComponentName } from './components/SetComponentName/SetComponentName.tsx';
+import { FIRST_COMPONENT_ID, ROOT_ID } from '../../App.constants.tsx';
+import { SetSpan } from './components/SetSpan/SetSpan.tsx';
 
 export interface Props {
   dragOverlay?: boolean;
   color?: string;
+  componentName?: string;
+  componentConfigName?: string;
   disabled?: boolean;
   dragging?: boolean;
+  isShowContainerOptions?: boolean;
   handle?: boolean;
   handleProps?: any;
   height?: number;
   index?: number;
   fadeIn?: boolean;
+  isRootComponent?: boolean;
   transform?: Transform | null;
   listeners?: DraggableSyntheticListeners;
   sorting?: boolean;
@@ -26,6 +38,12 @@ export interface Props {
   wrapperStyle?: React.CSSProperties;
   value: React.ReactNode;
   onRemove?(): void;
+  onAdd?(): void;
+  onEdit?(): void;
+  setColumns?(): void;
+  setSpan?(): void;
+  setGap?(): void;
+  setComponentName?(): void;
   renderItem?(args: {
     dragOverlay: boolean;
     dragging: boolean;
@@ -56,6 +74,7 @@ export const Item = React.memo(
         index,
         listeners,
         onRemove,
+        onEdit,
         renderItem,
         sorting,
         style,
@@ -63,6 +82,15 @@ export const Item = React.memo(
         transform,
         value,
         wrapperStyle,
+        onAdd,
+        setColumns,
+        setSpan,
+        setGap,
+        setComponentName,
+        componentName,
+        isRootComponent,
+        isShowContainerOptions,
+        componentConfigName,
         ...props
       },
       ref
@@ -78,6 +106,7 @@ export const Item = React.memo(
           document.body.style.cursor = '';
         };
       }, [dragOverlay]);
+
 
       return renderItem ? (
         renderItem({
@@ -143,13 +172,55 @@ export const Item = React.memo(
             {...props}
             tabIndex={!handle ? 0 : undefined}
           >
-            {value}
-            <span className={styles.Actions}>
-              {onRemove ? (
-                <Remove className={styles.Remove} onClick={onRemove} />
-              ) : null}
-              {handle ? <Handle {...handleProps} {...listeners} /> : null}
-            </span>
+            <div className={styles.Actions}>
+              {isRootComponent ? (
+                <>
+                  {setGap ? (
+                    <SetGap onClick={setGap} />
+                  ) : null}
+                  {onAdd ? (
+                    <Add onClick={onAdd} />
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  {onRemove ? (
+                    <Remove onClick={onRemove} />
+                  ) : null}
+                  {setComponentName ? (
+                    <SetComponentName onClick={setComponentName} />
+                  ) : null}
+                  {setColumns ? (
+                        <SetColumns onClick={setColumns} />
+                      ) : null}
+                  {setSpan ? (
+                        <SetSpan onClick={setSpan} />
+                      ) : null}
+                  {isShowContainerOptions ? (
+                    <>
+
+                      {setGap ? (
+                        <SetGap onClick={setGap} />
+                      ) : null}
+                    </>
+                  ) : null}
+
+
+                  {onEdit ? <Edit onClick={onEdit} /> : null}
+                  {onAdd && isShowContainerOptions ? (
+                    <Add onClick={onAdd} />
+                  ) : null}
+                  {handle ? <Handle {...handleProps} {...listeners} /> : null}
+                </>
+              )}
+
+            </div>
+            <div className={styles.Actions}>
+              <div style={{ padding: 10 }}>{componentConfigName} - {componentName}</div>
+            </div>
+            <div>
+              {value}
+            </div>
           </div>
         </li>
       );

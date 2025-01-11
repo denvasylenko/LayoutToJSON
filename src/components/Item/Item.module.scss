@@ -52,7 +52,7 @@ $focused-outline-color: #4c9ffe;
 
 .Item {
   position: relative;
-  display: flex;
+  // display: flex;
   flex-grow: 1;
   align-items: center;
   padding: 18px 20px;
@@ -137,7 +137,7 @@ $focused-outline-color: #4c9ffe;
 
 .Actions {
   display: flex;
-  align-self: flex-start;
+  justify-content: flex-end;
   margin-top: -12px;
   margin-left: auto;
   margin-bottom: -15px;

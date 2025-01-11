@@ -9,6 +9,7 @@ export interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     background: string;
   };
   cursor?: CSSProperties['cursor'];
+  onClick: any
 }
 
 export const Action = forwardRef<HTMLButtonElement, Props>(
