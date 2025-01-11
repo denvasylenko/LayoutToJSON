@@ -106,18 +106,33 @@ function App() {
 
   const [editableComponent, setEditableComponent] = React.useState(undefined)
 
+  const areAllElementsSpanEqual = (arr) => {
+    return new Set(arr).size <= 1;
+  };
+
   const addItems = (id) => {
     const newItemId = uuidv4()
-    setItems(prev => ({
-      ...prev,
-      [id]: [...(prev[id] ?? []), newItemId]
-    }))
-    setItemConfig(prev => ({ ...prev, [newItemId]: { 
-      name: newItemId,
-      gap: 32,
-      span: 24,
-      componentName: 'Container'
-    }}))
+    setItems(prev => {
+
+      // Before adding a new item, check if the neighboring items in the same container have the same span.
+      const itemsInContainer = prev[id]
+      const itemsInContainerConfig = itemsInContainer?.map(_id => itemConfig[_id]) ?? []
+      const itemsInContainerSpan = itemsInContainerConfig.map(itm => itm.span)
+      const span = itemsInContainerSpan.length && areAllElementsSpanEqual(itemsInContainerSpan) ? itemsInContainerSpan[0] : 24
+      setItemConfig(prev => ({ ...prev, [newItemId]: { 
+        name: newItemId,
+        gap: 32,
+        span,
+        componentName: 'Container'
+      }}))
+
+      return {
+        ...prev,
+        [id]: [...(prev[id] ?? []), newItemId]
+      }
+    })
+
+    
   }
 
   const _setItems = (id) => (items) => {
